@@ -1,10 +1,6 @@
 import csv
 import time
-import urllib
-import os
 import codecs
-from bs4 import BeautifulSoup
-from urllib import request
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
