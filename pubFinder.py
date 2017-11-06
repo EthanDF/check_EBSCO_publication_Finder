@@ -37,6 +37,7 @@ def peformSearch(driver,checkString):
     return (pageSource, ftLinkList)
 
 def performSecondSearch(driver,checkString):
+    """does a search with the full URL because the search box search didn't yield any results"""
     driver.get('http://search.ebscohost.com/login.aspx?direct=true&db=edspub&type=44&site=eds-live&bquery='+checkString)
     time.sleep(1.5)
     pageSource = driver.page_source
