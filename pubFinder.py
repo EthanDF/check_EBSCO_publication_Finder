@@ -36,20 +36,35 @@ def peformSearch(driver,checkString):
     time.sleep(1)
     return (pageSource, ftLinkList)
 
+def performSecondSearch(driver,checkString):
+    driver.get('http://search.ebscohost.com/login.aspx?direct=true&db=edspub&type=44&site=eds-live&bquery='+checkString)
+    time.sleep(1.5)
+    pageSource = driver.page_source
+
+    ftLinkList = []
+    ftLinks = driver.find_elements_by_class_name('ft-access-option')
+    for link in ftLinks:
+        ftLinkList.append(link.text)
+    time.sleep(1)
+    return (pageSource, ftLinkList)
 
 def checkISSN(driver, checkString, vendorName='Not Provided', startDate='NA', endDate='NA'):
 
+    pubs = []
+    pubs2 = []
     pageSource, pubs = peformSearch(driver,checkString)
 
     noResults = False
     if nothingFound in pageSource:
-        noResults = True
-        print('No Results for '+str(checkString))
+        pageSource2, pubs2 = performSecondSearch(driver,checkString)
+        if nothingFound in pageSource2:
+            noResults = True
+            print('No Results for '+str(checkString))
 
 
     vendorMatch = 'Not Provided'
     if vendorName != 'Not Provided':
-        if vendorName in pubs:
+        if vendorName in pubs or vendorName in pubs2:
             vendorMatch = True
         # add the vendor search data later
 
@@ -91,3 +106,5 @@ def checkISSNList():
 
 
     driver.close()
+
+checkISSNList()
