@@ -14,6 +14,8 @@ nothingFound = 'No results were found'
 def readFile():
 
     fileName = 'sampleList.csv'
+    # should contain:
+    #  sourceID (Aleph or Sierra Bib), ISSN/Text String (in quotes), vendor name to find on page,  start date, end date
     checkList = []
     with codecs.open(fileName, 'r', encoding='utf-8') as f:
         a = csv.reader(f)
@@ -49,7 +51,7 @@ def performSecondSearch(driver,checkString):
     time.sleep(1)
     return (pageSource, ftLinkList)
 
-def checkISSN(driver, checkString, vendorName='Not Provided', startDate='NA', endDate='NA'):
+def checkISSN(driver, sourceID, checkString, vendorName='Not Provided', startDate='NA', endDate='NA'):
 
     pubs = []
     pubs2 = []
@@ -77,7 +79,7 @@ def checkISSN(driver, checkString, vendorName='Not Provided', startDate='NA', en
     if endDate != 'NA':
         pass
 
-    return([checkString,noResults,vendorName, vendorMatch, startDate, startDateMatch, endDate, endDateMatch])
+    return([sourceID, checkString,noResults,vendorName, vendorMatch, startDate, startDateMatch, endDate, endDateMatch])
 
 def openConnection():
     # establish login
@@ -97,12 +99,13 @@ def checkISSNList():
     checkList = readFile()
 
     for issn in checkList:
-        checkString = issn[0]
-        vendorName = issn[1]
-        startDate = issn[2]
-        endDate = issn[3]
+        sourceID = issn[0]
+        checkString = issn[1]
+        vendorName = issn[2]
+        startDate = issn[3]
+        endDate = issn[4]
 
-        results = checkISSN(driver, checkString, vendorName, startDate, endDate)
+        results = checkISSN(driver, sourceID, checkString, vendorName, startDate, endDate)
         writeResults(results)
 
 
